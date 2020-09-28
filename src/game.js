@@ -1,11 +1,21 @@
 export default class Game {
+    static points = {
+        '1': 10,
+        '2': 20,
+        '3': 40,
+        '4': 80
+    };
+
     score = 0;
-    lines = 0;
-    level = 0;
+    lines = 19;
     playfield = this.createPlayfield();
     activePiece = this.createPiece();
 
     nextPiece = this.createPiece();
+
+    get level() {
+        return Math.floor(this.lines * 0.1);
+    }
 
     getState() {
         const playfield = this.createPlayfield();
@@ -54,53 +64,53 @@ export default class Game {
         switch (type) {
             case 'I':
                 piece.blocks = [
-                    [0,0,0,0],
-                    [1,1,1,1],
-                    [0,0,0,0],
-                    [0,0,0,0]
+                    [0, 0, 0, 0],
+                    [1, 1, 1, 1],
+                    [0, 0, 0, 0],
+                    [0, 0, 0, 0]
                 ];
                 break;
             case 'J':
                 piece.blocks = [
-                    [0,0,0],
-                    [2,2,2],
-                    [0,0,2]
+                    [0, 0, 0],
+                    [2, 2, 2],
+                    [0, 0, 2]
                 ];
                 break;
             case 'L':
                 piece.blocks = [
-                    [0,0,0],
-                    [3,3,3],
-                    [3,0,0]
+                    [0, 0, 0],
+                    [3, 3, 3],
+                    [3, 0, 0]
                 ];
                 break;
             case 'O':
                 piece.blocks = [
-                    [0,0,0,0],
-                    [0,4,4,0],
-                    [0,4,4,0],
-                    [0,0,0,0]
+                    [0, 0, 0, 0],
+                    [0, 4, 4, 0],
+                    [0, 4, 4, 0],
+                    [0, 0, 0, 0]
                 ];
                 break;
             case 'S':
                 piece.blocks = [
-                    [0,0,0],
-                    [0,5,5],
-                    [5,5,0]
+                    [0, 0, 0],
+                    [0, 5, 5],
+                    [5, 5, 0]
                 ];
                 break;
             case 'T':
                 piece.blocks = [
-                    [0,0,0],
-                    [6,6,6],
-                    [0,6,0]
+                    [0, 0, 0],
+                    [6, 6, 6],
+                    [0, 6, 0]
                 ];
                 break;
             case 'Z':
                 piece.blocks = [
-                    [0,0,0],
-                    [7,7,0],
-                    [0,7,7]
+                    [0, 0, 0],
+                    [7, 7, 0],
+                    [0, 7, 7]
                 ];
                 break;
             default:
@@ -135,6 +145,8 @@ export default class Game {
         if (this.hasCollision()) {
             this.activePiece.y -= 1;
             this.lockPiece();
+            const clearedLines = this.clearLines();
+            this.updateScore(clearedLines);
             this.updatePieces();
         }
     }
@@ -195,6 +207,45 @@ export default class Game {
                     this.playfield[pieceY + y][pieceX + x] = blocks[y][x];
                 }
             }
+        }
+    }
+
+    clearLines() {
+        let lines = [];
+        const rows = 20;
+        const columns = 10;
+
+        for (let y = rows - 1; y >= 0; y--) {
+            let numberOfBlocks = 0;
+
+            for (let x = 0; x < columns; x++) {
+                if (this.playfield[y][x]) {
+                    numberOfBlocks += 1;
+                }
+            }
+            if (numberOfBlocks === 0) {
+                break;
+            }
+            else if (numberOfBlocks < columns) {
+                continue;
+            }
+            else if (numberOfBlocks === columns) {
+                lines.unshift(y);
+            }
+        }
+
+        for (const index of lines) {
+            this.playfield.splice(index, 1);
+            this.playfield.unshift(new Array(columns).fill(0));
+        }
+
+        return lines.length;
+    }
+
+    updateScore(clearedLines) {
+        if (clearedLines > 0) {
+            this.score += Game.points[clearedLines] * (this.level + 1);
+            this.lines += clearedLines;
         }
     }
 

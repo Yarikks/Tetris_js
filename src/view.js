@@ -25,8 +25,8 @@ export default class View {
         this.playfieldY = this.playfieldBorderWidth;
         this.playfieldWidth = this.width * 2 / 3;
         this.playfieldHeight = this.height;
-        this.playfiledInnerWidth = this.playfieldWidth - this.playfieldBorderWidth*2;
-        this.playfiledInnerHeight = this.playfieldHeight - this.playfieldBorderWidth*2;
+        this.playfiledInnerWidth = this.playfieldWidth - this.playfieldBorderWidth * 2;
+        this.playfiledInnerHeight = this.playfieldHeight - this.playfieldBorderWidth * 2;
 
         this.blockWidth = this.playfiledInnerWidth / columns;
         this.blockHeight = this.playfiledInnerHeight / rows;
@@ -50,30 +50,30 @@ export default class View {
         this.context.font = '18px "Press Start 2P"';
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
-        this.context.fillText('Press ENTER to start', this.width/2,this.height/2);
+        this.context.fillText('Press ENTER to start', this.width / 2, this.height / 2);
     }
 
     renderPauseScreen() {
         this.context.fillStyle = 'rgba(0,0,0,0.75)';
-        this.context.fillRect(0,0,this.width,this.height);
+        this.context.fillRect(0, 0, this.width, this.height);
 
         this.context.fillStyle = 'white';
         this.context.font = '18px "Press Start 2P"';
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
-        this.context.fillText('Press ENTER to resume', this.width/2,this.height/2);
+        this.context.fillText('Press ENTER to resume', this.width / 2, this.height / 2);
     }
 
-    renderEndScreen({score}) {
+    renderEndScreen({ score }) {
         this.clearScreen();
 
         this.context.fillStyle = 'white';
         this.context.font = '18px "Press Start 2P"';
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
-        this.context.fillText('GAME OVER!', this.width/2,this.height/2 - 48);
-        this.context.fillText(`Score: ${score}`, this.width/2,this.height/2);
-
+        this.context.fillText('GAME OVER!', this.width / 2, this.height / 2 - 48);
+        this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
+        this.context.fillText('Press Enter to restart', this.width / 2, this.height / 2 + 48);
     }
 
     clearScreen() {
@@ -101,7 +101,7 @@ export default class View {
         }
         this.context.strokeStyle = 'white';
         this.context.lineWidth = this.playfieldBorderWidth;
-        this.context.strokeRect(0,0, this.playfieldWidth, this.playfieldHeight);
+        this.context.strokeRect(0, 0, this.playfieldWidth, this.playfieldHeight);
     }
 
     renderPanel({ level, score, lines, nextPiece }) {

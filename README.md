@@ -1,1 +1,1 @@
-![Tetris Demo Gif](Tetris.gif "Tetris Demo Gif")
+![Tetris Demo Gif](tetris-demo.gif "Tetris Demo Gif")

@@ -7,7 +7,7 @@ export default class Game {
     };
 
     score = 0;
-    lines = 19;
+    lines = 0;
     playfield = this.createPlayfield();
     activePiece = this.createPiece();
 
@@ -39,8 +39,12 @@ export default class Game {
         }
 
         return {
+            score: this.score,
+            level: this.level,
+            lines: this.lines,
+            nextPiece: this.nextPiece,
             playfield
-        }
+        };
     }
 
     createPlayfield() {

@@ -1,5 +1,5 @@
 export default class Controller {
-    constructor(game, view){
+    constructor(game, view) {
         this.game = game;
         this.view = view;
         this.isPlaying = false;
@@ -37,81 +37,83 @@ export default class Controller {
     updateView() {
         const state = this.game.getState();
 
-        if(state.isGameOver){
+        if (state.isGameOver) {
             this.view.renderEndScreen(state);
         }
-        else if(!this.isPlaying){
+        else if (!this.isPlaying) {
             this.view.renderPauseScreen();
         }
-        else{
+        else {
             this.view.renderMainScreen(state);
+            this.startTimer();
         }
     }
 
     startTimer() {
         const speed = 1000 - this.game.getState().level * 100;
-        
-        if(!this.intervalId){
+
+        if (!this.intervalId) {
             this.intervalId = setInterval(() => {
                 this.update();
-             }, speed > 0 ? speed : 100);
+            }, speed > 0 ? speed : 100);
         }
     }
 
     stopTimer() {
-        if(this.intervalId){
+        if (this.intervalId) {
             clearInterval(this.intervalId);
             this.intervalId = null;
         }
     }
 
-    handleKeyDown(event){
+    handleKeyDown(event) {
         const state = this.game.getState();
 
-        switch(event.keyCode){
+        switch (event.keyCode) {
             case 13: // enter
-                if(state.isGameOver){
+                if (state.isGameOver) {
                     this.reset();
                 }
-                else if(this.isPlaying){
+                else if (this.isPlaying) {
                     this.pause();
                 }
-                else{
+                else {
                     this.play();
                 }
                 break;
             case 37: // left arrow
-                if(this.isPlaying){
+                if (this.isPlaying) {
                     game.movePieceLeft();
                     this.updateView();
                 }
                 break;
             case 38: // up arrow
-                if(this.isPlaying){
+                if (this.isPlaying) {
                     game.rotatePiece();
                     this.updateView();
                 }
                 break;
             case 39: // right arrow
-                if(this.isPlaying){
+                if (this.isPlaying) {
                     game.movePieceRight();
                     this.updateView();
                 }
                 break;
             case 40: // down arrow
-                if(this.isPlaying){
+                if (this.isPlaying) {
                     this.stopTimer();
                     game.movePieceDown();
                     this.updateView();
                 }
+
                 break;
         }
     }
 
     handleKeyUp(event) {
-        switch(event.keyCode){
+        switch (event.keyCode) {
             case 13: // enter
-                if(this.isPlaying){
+                if (this.isPlaying) {
                     this.startTimer();
                 }
                 break;
